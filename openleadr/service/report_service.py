@@ -109,7 +109,7 @@ class ReportService(VTNService):
                     results = await utils.gather_if_required(results)
                 elif mode == 'full':
                     results = await utils.await_if_required(self.on_register_report(report))
-            elif report['report_name'] == 'METADATA_TELEMETRY_USAGE':
+            elif report['report_name'] in ('METADATA_TELEMETRY_USAGE', 'METADATA_x-FORECAST_AVAILABILITY'):
                 if mode == 'compact':
                     results = [self.on_register_report(ven_id=payload['ven_id'],
                                                        resource_id=rd.get('report_data_source', {}).get('resource_id'),
@@ -125,6 +125,7 @@ class ReportService(VTNService):
             elif report['report_name'] in ('METADATA_HISTORY_USAGE', 'METADATA_HISTORY_GREENBUTTON'):
                 report_requests.append(None)
                 continue
+            elif report['report_name'] == 'METADATA_x-FORECAST_AVAILABILITY':
             else:
                 logger.warning("Reports other than TELEMETRY_USAGE, TELEMETRY_STATUS, "
                                "HISTORY_USAGE and HISTORY_GREENBUTTON are not yet supported. "
